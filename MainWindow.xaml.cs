@@ -32,4 +32,5 @@ namespace Ransomware_Maker.cs
             Process.Start(new ProcessStartInfo { FileName = "https://github.com/kaixinol/Ransomware-Maker.cs", UseShellExecute = true });
         }
     }
+
 }
