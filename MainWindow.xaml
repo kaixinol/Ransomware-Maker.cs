@@ -4,8 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Ransomware-Maker.cs v1.0" Height="383" Width="733">
-    <Grid HorizontalAlignment="Center" Margin="0,10,0,0" Width="713" RenderTransformOrigin="0.219,0.226" Height="323" VerticalAlignment="Top">
+        Title="Ransomware-Maker.cs v1.0" Height="405" Width="733">
+    <Grid HorizontalAlignment="Right" Width="713" RenderTransformOrigin="0.219,0.226" Height="369" VerticalAlignment="Center" Margin="0,0,10,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="21*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
         <GroupBox HorizontalAlignment="Left" Height="195" Header="Setting" Margin="10,0,0,0" VerticalAlignment="Top" Width="225">
             <StackPanel HorizontalAlignment="Left" Height="164" Margin="10,0,0,0" VerticalAlignment="Top" Width="199">
                 <CheckBox Content="Reduce program size" Height="20" Width="180" HorizontalAlignment="Left" FontSize="16">
@@ -50,14 +54,14 @@
                 </Label>
             </StackPanel>
         </GroupBox>
-        <GroupBox HorizontalAlignment="Left" Height="195" Header="Type" Margin="240,0,0,0" VerticalAlignment="Top" Width="463">
+        <GroupBox HorizontalAlignment="Left" Height="195" Header="Type" Margin="240,0,0,0" VerticalAlignment="Top" Width="463" Grid.ColumnSpan="2">
             <Grid HorizontalAlignment="Left" Height="185" Margin="10,0,0,0" VerticalAlignment="Top" Width="434">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="86*"/>
                     <RowDefinition Height="8*"/>
                     <RowDefinition Height="61*"/>
                 </Grid.RowDefinitions>
-                <RadioButton x:Name="rdb_cs" Content="C#" HorizontalAlignment="Left" Height="21" Margin="28,-2,0,0" VerticalAlignment="Top" Width="129">
+                <RadioButton x:Name="rdb_cs" Content="C#" HorizontalAlignment="Left" Height="21" Margin="28,-2,0,0" VerticalAlignment="Top" Width="129" IsChecked="False" Checked="rdb_cs_Checked" Loaded="rdb_cs_Loaded">
                     <RadioButton.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Use C# language (csc.exe)"/>
@@ -65,8 +69,8 @@
                     </RadioButton.ToolTip>
 
                 </RadioButton>
-                <RadioButton x:Name="rdb_cpp" Content="C++" HorizontalAlignment="Left" Height="25" Margin="256,0,0,0" VerticalAlignment="Top" Width="110" RenderTransformOrigin="0.782,0.843">
-                        <RadioButton.ToolTip>
+                <RadioButton x:Name="rdb_cpp" Content="C++" HorizontalAlignment="Left" Height="25" Margin="256,0,0,0" VerticalAlignment="Top" Width="110" RenderTransformOrigin="0.782,0.843" Checked="rdb_cpp_Checked">
+                    <RadioButton.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Use C++ language (g++.exe)"/>
                         </ToolTip>
@@ -102,6 +106,20 @@
                 </TextBox>
             </Grid>
         </GroupBox>
-        <Button x:Name="btn_generate" Content="GENERATE" HorizontalAlignment="Center" Margin="0,200,0,10" Width="693" FontFamily="Arial Black" FontSize="36"/>
+        <Button x:Name="btn_generate" Content="GENERATE" HorizontalAlignment="Left" Margin="10,200,0,0" Width="693" FontFamily="Arial Black" FontSize="36" Height="112" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Label x:Name="lbl_compiler" Content="" HorizontalAlignment="Left" Margin="10,317,0,10" Width="693" FontFamily="Comic Sans MS" FontSize="14" Grid.ColumnSpan="2" MouseDown="lbl_compiler_MouseDown">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Setter Property="Foreground" Value="#FF0A3C00"/>
+                    <Setter Property="Cursor" Value="Arrow"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Red"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
     </Grid>
 </Window>
