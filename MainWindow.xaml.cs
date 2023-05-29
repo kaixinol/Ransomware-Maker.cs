@@ -19,31 +19,30 @@ namespace Ransomware_Maker.cs
         {
             InitializeComponent();
         }
-        private static string GetCscCompiler(string folder)
+        private static string GetCscCompiler()
         {
+            string frameworkPath = "C:\\Windows\\Microsoft.NET\\Framework\\";
             List<string> compilers = new List<string>();
-            foreach (var entry in new DirectoryInfo(folder).EnumerateDirectories())
+            foreach (var entry in new DirectoryInfo(frameworkPath).EnumerateDirectories())
             {
-                if (entry.Exists)
+                if (entry.Name.Contains("v"))
                 {
                     compilers.Add(entry.FullName);
                 }
             }
 
             Dictionary<int, string> temp = new Dictionary<int, string>();
-            foreach (var i in compilers)
+            foreach (var compiler in compilers)
             {
-                string[] parts = i.Split('\\');
-                string version = parts[4].Substring(1).Replace(".", "");
-                if (parts[4].Contains("v"))
-                {
-                    temp[Convert.ToInt32(version)] = parts[4];
-                }
+                string[] parts = compiler.Split('\\');
+                int version = int.Parse(parts[4].Substring(1, 3).Replace(".", ""));
+                temp[version] = parts[4];
             }
 
-            int maxKey = temp.Keys.Max();
-            string cscPath = "C:\\Windows\\Microsoft.NET\\Framework\\" + temp[maxKey] + "\\csc.exe";
-            return cscPath;
+            Console.WriteLine(temp);
+            string selectedCompiler = temp[temp.Keys.Max()];
+
+            return frameworkPath + selectedCompiler + "\\csc.exe";
         }
         private void rdb_cpp_Checked(object sender, RoutedEventArgs e)
         {
@@ -76,7 +75,7 @@ namespace Ransomware_Maker.cs
         }
         private void rdb_cs_Checked(object sender, RoutedEventArgs e)
         {
-            lbl_compiler.Content = GetCscCompiler("C:\\Windows\\Microsoft.NET\\Framework");
+            lbl_compiler.Content = GetCscCompiler();
         }
 
         private void lbl_compiler_MouseDown(object sender, MouseButtonEventArgs e)
