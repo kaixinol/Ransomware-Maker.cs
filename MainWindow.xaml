@@ -33,7 +33,7 @@
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <Label x:Name="lbl_open_source" Content="open source repository" Height="28" Width="193" FontFamily="Consolas" RenderTransformOrigin="0.486,0.993" FontSize="14" Margin="0,66,0,0" MouseDown="lbl_open_source_MouseDown">
+                <Label x:Name="lbl_open_source" Content="open source repository" Height="28" Width="193" FontFamily="Consolas" RenderTransformOrigin="0.486,0.993" FontSize="14" Margin="0,66,0,0" MouseDown="Lbl_open_source_MouseDown">
                     <Label.Style>
                         <Style TargetType="Label">
                             <Setter Property="Foreground" Value="#FF0A3C00"/>
@@ -61,7 +61,7 @@
                     <RowDefinition Height="8*"/>
                     <RowDefinition Height="61*"/>
                 </Grid.RowDefinitions>
-                <RadioButton x:Name="rdb_cs" Content="C#" HorizontalAlignment="Left" Height="21" Margin="28,-2,0,0" VerticalAlignment="Top" Width="129" IsChecked="False" Checked="rdb_cs_Checked" Loaded="rdb_cs_Loaded">
+                <RadioButton x:Name="rdb_cs" Content="C#" HorizontalAlignment="Left" Height="21" Margin="28,-2,0,0" VerticalAlignment="Top" Width="129" IsChecked="False" Checked="Rdb_cs_Checked" Loaded="Rdb_cs_Loaded">
                     <RadioButton.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Use C# language (csc.exe)"/>
@@ -69,7 +69,7 @@
                     </RadioButton.ToolTip>
 
                 </RadioButton>
-                <RadioButton x:Name="rdb_cpp" Content="C++" HorizontalAlignment="Left" Height="25" Margin="256,0,0,0" VerticalAlignment="Top" Width="110" RenderTransformOrigin="0.782,0.843" Checked="rdb_cpp_Checked">
+                <RadioButton x:Name="rdb_cpp" Content="C++" HorizontalAlignment="Left" Height="25" Margin="256,0,0,0" VerticalAlignment="Top" Width="110" RenderTransformOrigin="0.782,0.843" Checked="Rdb_cpp_Checked">
                     <RadioButton.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Use C++ language (g++.exe)"/>
@@ -106,8 +106,8 @@
                 </TextBox>
             </Grid>
         </GroupBox>
-        <Button x:Name="btn_generate" Content="GENERATE" HorizontalAlignment="Left" Margin="10,200,0,0" Width="693" FontFamily="Arial Black" FontSize="36" Height="112" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Label x:Name="lbl_compiler" Content="" HorizontalAlignment="Left" Margin="10,317,0,10" Width="693" FontFamily="Comic Sans MS" FontSize="14" Grid.ColumnSpan="2" MouseDown="lbl_compiler_MouseDown">
+        <Button x:Name="btn_generate" Content="GENERATE" HorizontalAlignment="Left" Margin="10,200,0,0" Width="693" FontFamily="Arial Black" FontSize="36" Height="112" VerticalAlignment="Top" Grid.ColumnSpan="2" Click="Btn_generate_Click"/>
+        <Label x:Name="lbl_compiler" Content="" HorizontalAlignment="Center" Margin="0,330,0,-3" Width="611" FontFamily="Comic Sans MS" FontSize="14" MouseDown="Lbl_compiler_MouseDown">
             <Label.Style>
                 <Style TargetType="Label">
                     <Setter Property="Foreground" Value="#FF0A3C00"/>
@@ -121,5 +121,6 @@
                 </Style>
             </Label.Style>
         </Label>
+        <CheckBox x:Name="chk_64bit" Content="64bit" HorizontalAlignment="Left" Height="29" Margin="636,340,0,0" VerticalAlignment="Top" Width="67" RenderTransformOrigin="0.467,0.487" Grid.ColumnSpan="2" Checked="Chk_64bit_Checked" Unchecked="Chk_64bit_Unchecked"/>
     </Grid>
 </Window>
