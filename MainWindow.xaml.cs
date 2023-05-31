@@ -25,6 +25,7 @@ namespace Ransomware_Maker.cs
             if (!Directory.Exists(frameworkPath))
             {
                 MessageBox.Show("Folder path not Folder directory does not exist, fallback to 32-bit.", "Warning", MessageBoxButton.OK, MessageBoxImage.Error);
+                frameworkPath = "C:\\Windows\\Microsoft.NET\\Framework\\";
             }
             List<string> compilers = new();
             foreach (var entry in new DirectoryInfo(frameworkPath).EnumerateDirectories())
@@ -92,11 +93,12 @@ namespace Ransomware_Maker.cs
         }
 
         private void Btn_generate_Click(object sender, RoutedEventArgs e)
-        {
+        {/*
             if ((bool)rdb_cs.IsChecked)
             {
 
             }
+        */
         }
 
         private void Chk_64bit_Checked(object sender, RoutedEventArgs e)
