@@ -72,14 +72,14 @@
                 <RadioButton x:Name="rdb_cpp" Content="C++" HorizontalAlignment="Left" Height="25" Margin="256,0,0,0" VerticalAlignment="Top" Width="110" RenderTransformOrigin="0.782,0.843" Checked="Rdb_cpp_Checked">
                     <RadioButton.ToolTip>
                         <ToolTip>
-                            <TextBlock Text="Use C++ language (g++.exe)"/>
+                            <TextBlock Text="Use C++ language (gcc.exe)"/>
                         </ToolTip>
                     </RadioButton.ToolTip>
                 </RadioButton>
                 <TextBox x:Name="tbox_warning" HorizontalAlignment="Center" Height="43" Margin="0,19,0,0" TextWrapping="Wrap" Text="warning content" VerticalAlignment="Top" Width="414" FontSize="16">
                     <TextBox.ToolTip>
                         <ToolTip>
-                            <TextBlock Text="Warning content after the virus is encrypted"/>
+                            <TextBlock Text="The content of the warning after the virus encryption is completed"/>
                         </ToolTip>
                     </TextBox.ToolTip>
                 </TextBox>
@@ -90,10 +90,10 @@
                         </ToolTip>
                     </TextBox.ToolTip>
                 </TextBox>
-                <TextBox x:Name="tbox_suffix" HorizontalAlignment="Left" Height="38" Margin="304,64,0,0" TextWrapping="Wrap" Text=".suffix" VerticalAlignment="Top" Width="115" FontSize="16" Grid.RowSpan="3">
+                <TextBox x:Name="tbox_suffix" HorizontalAlignment="Left" Height="38" Margin="304,64,0,0" TextWrapping="Wrap" Text=".suffix" VerticalAlignment="Top" Width="120" FontSize="16">
                     <TextBox.ToolTip>
                         <ToolTip>
-                            <TextBlock Text="Encrypted suffix of ransomware"/>
+                            <TextBlock Text="Encrypted file suffix"/>
                         </ToolTip>
                     </TextBox.ToolTip>
                 </TextBox>
@@ -121,6 +121,6 @@
                 </Style>
             </Label.Style>
         </Label>
-        <CheckBox x:Name="chk_64bit" Content="64bit" HorizontalAlignment="Left" Height="29" Margin="636,340,0,0" VerticalAlignment="Top" Width="67" RenderTransformOrigin="0.467,0.487" Grid.ColumnSpan="2" Checked="Chk_64bit_Checked" Unchecked="Chk_64bit_Unchecked"/>
+        <CheckBox x:Name="chk_64bit" Content="64bit" HorizontalAlignment="Left" Height="29" Margin="636,340,0,0" VerticalAlignment="Top" Width="67" RenderTransformOrigin="0.467,0.487" Grid.ColumnSpan="2" Checked="Chk_64bit_Checked" Unchecked="Chk_64bit_Unchecked" FontFamily="Comic Sans MS"/>
     </Grid>
 </Window>
