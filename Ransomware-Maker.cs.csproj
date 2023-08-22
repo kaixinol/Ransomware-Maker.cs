@@ -10,6 +10,8 @@
     <PackageProjectUrl>https://github.com/kaixinol/Ransomware-Maker.cs</PackageProjectUrl>
     <Copyright>kaesinol</Copyright>
     <Platforms>AnyCPU;x64</Platforms>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseWindowsForms>False</UseWindowsForms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
