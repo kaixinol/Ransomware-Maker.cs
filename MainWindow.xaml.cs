@@ -105,6 +105,7 @@ namespace Ransomware_Maker.cs
                 return;
             }
             bool smallest = chk_resize.IsChecked == true;
+
             string outputOption = lang switch
             {
                 "c#" => " /out:virus.exe ",
@@ -123,11 +124,13 @@ namespace Ransomware_Maker.cs
                 }
             }
             else
+
             {
                 MessageBox.Show(result, Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         string AddArgv(string langType, bool smallest)
+
         {
             string result = langType switch
             {
@@ -152,12 +155,14 @@ namespace Ransomware_Maker.cs
                 };
             }
 
+
             return result;
         }
 
         static string ExecCmd(string cmd)
             {
                 ProcessStartInfo psi = new()
+
                 {
                     FileName = "cmd.exe",
                     RedirectStandardOutput = true,
@@ -233,7 +238,6 @@ namespace Ransomware_Maker.cs
             string tempPath = Path.GetTempPath();
 
             string filePath = Path.Combine(tempPath, $"{randomStr}.{suffix}");
-
             using (StreamWriter writer = new(filePath))
             {
                 writer.Write(data);
