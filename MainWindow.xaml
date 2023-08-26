@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Ransomware-Maker.cs v1.0 by kaesinol" Height="405" Width="733">
+        Title="Ransomware-Maker.cs v1.1 by kaesinol" Height="405" Width="733">
     <Grid HorizontalAlignment="Right" Width="713" RenderTransformOrigin="0.219,0.226" Height="369" VerticalAlignment="Center" Margin="0,0,10,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="21*"/>
