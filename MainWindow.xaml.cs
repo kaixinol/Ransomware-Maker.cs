@@ -86,7 +86,13 @@ namespace Ransomware_Maker.cs
         }
         private void Rdb_cs_Checked(object sender, RoutedEventArgs e)
         {
-            lbl_compiler.Content = GetCscCompiler();
+            if (chk_64bit.IsChecked == true) {
+                lbl_compiler.Content = GetCscCompiler("Framework64");
+            }
+            else
+            {
+                lbl_compiler.Content = GetCscCompiler();
+            }
         }
 
         private void Lbl_compiler_MouseDown(object sender, MouseButtonEventArgs e)
