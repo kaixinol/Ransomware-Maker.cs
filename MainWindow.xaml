@@ -26,14 +26,21 @@
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <CheckBox x:Name="chk_sandbox" Content="Anti sandbox" Height="26" Width="178" HorizontalAlignment="Left" FontSize="16">
+                <CheckBox x:Name="chk_sandbox" Content="Anti sandbox" Height="20" Width="178" HorizontalAlignment="Left" FontSize="16">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Slows down and hinders running in the sandbox"/>
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <Label x:Name="lbl_open_source" Content="open source repository" Height="28" Width="193" FontFamily="Consolas" RenderTransformOrigin="0.486,0.993" FontSize="14" Margin="0,66,0,0" MouseDown="Lbl_open_source_MouseDown">
+                <CheckBox x:Name="chk_sign" Content="Self-signed certificate" Height="20" Width="191" HorizontalAlignment="Left" FontSize="16">
+                    <CheckBox.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Slows down and hinders running in the sandbox"/>
+                        </ToolTip>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                <Label x:Name="lbl_open_source" Content="open source repository" Height="27" Width="190" FontFamily="Consolas" RenderTransformOrigin="0.486,0.993" FontSize="14" MouseDown="Lbl_open_source_MouseDown">
                     <Label.Style>
                         <Style TargetType="Label">
                             <Setter Property="Foreground" Value="#FF0A3C00"/>
