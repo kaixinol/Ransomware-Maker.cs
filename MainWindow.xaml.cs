@@ -151,6 +151,7 @@ namespace Ransomware_Maker.cs
                     if (!string.IsNullOrEmpty(result2))
                     {
                         MessageBox.Show(result2, "Signature failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
                     }
                 }
             }
@@ -158,6 +159,20 @@ namespace Ransomware_Maker.cs
 
             {
                 MessageBox.Show(result, "Compilation failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if(chk_upx.IsChecked == true)
+            {
+                if (rdb_cs.IsChecked == true)
+                {
+                    MessageBox.Show("UPX does not support compressing .NET programs", "Unsupported features", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                    string result3 = ExecCmd("cmd.exe /c upx.exe virus.exe -9 --force");
+                    if (result3.Contains("error"))
+                    {
+                        MessageBox.Show(result3, "Compression failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
             }
         }
         string AddArgv(string langType, bool smallest)
@@ -292,7 +307,17 @@ namespace Ransomware_Maker.cs
                 lbl_compiler.Content = GetCscCompiler();
         }
 
-
+        private void chk_upx_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!File.Exists("upx.exe"))
+            {
+                if(MessageBox.Show("upx.exe not found, download it from https://github.com/upx/upx/releases/latest ?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Process.Start(new ProcessStartInfo { FileName = "https://github.com/upx/upx/releases/latest", UseShellExecute = true });
+                }
+                chk_upx.IsChecked = false;
+            }
+        }
     }
 
 

